@@ -1,5 +1,11 @@
 module.exports = function(sequelize, DataTypes) {
 	var Message = sequelize.define("Message",{
+      id: {
+           type: DataTypes.INTEGER,
+           allowNull: false,
+           autoIncrement: true,
+           primaryKey: true
+      },
       title: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -19,8 +25,8 @@ module.exports = function(sequelize, DataTypes) {
       });
 	
     Message.associate = function(models){
-	    Message.belongsTo(models.User,{as:'Sender',foreignKey:"senderId"});
-	    Message.belongsTo(models.User,{as:'Recipient',foreignKey:"recipientId"})
+	    Message.belongsTo(models.User,{as:'Sender',foreignKey:"user_id"});
+	    Message.belongsTo(models.User,{as:'Recipient',foreignKey:"user_id"})
     };
 
 	return Message;

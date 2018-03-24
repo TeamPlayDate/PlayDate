@@ -1,4 +1,4 @@
-module.exports = [
+var interests = [
 	{id: 1, name: "Arts & Culture"},
 	{id: 11, name: "Festivals"},
 	{id: 12, name: "Museums"},
@@ -20,5 +20,6 @@ module.exports = [
 	{id: 52, name: "Video Games"},
 	{id: 53, name: "Vintage/Collecting"},
 	{id: 54, name: "DIY/Tech"}
+];
 
-]
+module.exports = interests;
