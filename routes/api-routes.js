@@ -2,7 +2,7 @@ var db = require("../models");
 var aws = require('aws-sdk');
 
 const S3_BUCKET = process.env.S3_BUCKET;
-aws.config.region = 'us-east-2';
+aws.config.region = 'us-east-1';
 
 module.exports = function(app) {
 
