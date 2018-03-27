@@ -26,10 +26,6 @@ app.use(bodyParser.json());
 // Static directory
 app.use(express.static("app/public"));
 
-
-
-
-
 // AWS.config.loadFromPath('./config/aws.json');
 
 // Routes
