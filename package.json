@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/TeamPlayDate/PlayDate#readme",
   "dependencies": {
+    "aws-sdk": "^2.214.1",
+    "dotenv": "^5.0.1",
     "express": "^4.16.3",
     "express-handlebars": "^3.0.0",
     "mysql2": "^1.5.3",
