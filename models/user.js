@@ -12,14 +12,14 @@ module.exports = function(sequelize, DataTypes) {
 	},
 
   	latitude: {
-  		type: Sequelize.INTEGER,
+  		type: DataTypes.INTEGER,
   		allowNull: true,
   		defaultValue: null,
     	validate: { min: -90, max: 90 }
   		},
 
   	longitude: {
-    	type: Sequelize.INTEGER,
+    	type: DataTypes.INTEGER,
     	allowNull: true,
     	defaultValue: null,
     	validate: { min: -180, max: 180 }
