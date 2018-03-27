@@ -52,7 +52,9 @@ function uploadFile(file, signedRequest, url){
 
 	console.log(signedRequest);
   const xhr = new XMLHttpRequest();
-  xhr.open('PUT', "https://cors-anywhere.herokuapp.com/" + signedRequest);
+  xhr.open('PUT', signedRequest);
+    // xhr.open('PUT', "https://cors-anywhere.herokuapp.com/" + signedRequest);
+
   xhr.onreadystatechange = function() {
     if(xhr.readyState === 4){
       if(xhr.status === 200){
