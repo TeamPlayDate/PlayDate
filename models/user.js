@@ -33,12 +33,11 @@ module.exports = function(sequelize, DataTypes) {
   		}
   	},
 
-  	interests: {
-  		type: DataTypes.STRING,
-  		allowNull: false,
-  		validate: [1]
-  	}
   });
+
+	User.associate = function(models){
+		User.hasMany(models.User_Interest_Relationship, {as: "interests"});
+	};
 
 	return User;
 
