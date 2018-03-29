@@ -145,28 +145,28 @@ app.put("/api/user", function(req, res) {
       
     }).then(function(dbUser) {
       
-       
-       var count = 0;
-  for (var i = 0; i<req.body.interests.length; i++)
-      {
-        db.User_Interest_Relationship.upsert({
-            user_id: req.body.user_id,
-            interest_id: req.body.interests[i]
-        }).then(function(result){
-            count++;
-            if (count == req.body.interests.length)
-            {
-              res.json(dbUser);
-            }
-        }).catch(function(err) {
-         console.log(err);
-        });
-      }
-
-     
+      db.User_Interest_Relationship.destroy({where: {user_id: req.body.user_id}}).then(function(){
+          var count = 0;
+          for (var i = 0; i<req.body.interests.length; i++)
+          {
+              db.User_Interest_Relationship.upsert({
+                  user_id: req.body.user_id,
+                  interest_id: req.body.interests[i]
+              }).then(function(result){
+                  count++;
+                  if (count == req.body.interests.length)
+                  {
+                      res.json(dbUser);
+                  }
+                });
+          }
+          
     }).catch(function(err) {
-       res.json(err);
+         console.log(err);
     });
+  }).catch(function(err) {
+    res.json(err);
+  });
  
 
 });
