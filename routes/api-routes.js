@@ -137,17 +137,17 @@ app.put("/api/user", function(req, res) {
       }, 
       {
           where: {
-            id: req.body.id
+            user_id: req.body.user_id
           }
       
     }).then(function(dbUser) {
       
-       userId = dbUser.dataValues.user_id;
        
+       var count = 0;
   for (var i = 0; i<req.body.interests.length; i++)
       {
-        db.User_Interest_Relationship.create({
-            user_id: userId,
+        db.User_Interest_Relationship.upsert({
+            user_id: req.body.user_id,
             interest_id: req.body.interests[i]
         }).then(function(result){
             count++;
