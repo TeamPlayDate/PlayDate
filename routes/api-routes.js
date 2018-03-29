@@ -67,9 +67,18 @@ module.exports = function(app) {
 app.post("/api/user", function(req, res) {
 
     db.User.create({
-      text: req.body.text,
-      complete: req.body.complete
+      user_name: req.body.user_name,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude,
+      picture: req.body.picture,
     }).then(function(dbUser) {
+    	 for (var i = 0; i<req.body.interests.length; i++)
+      {
+        db.User_Interest_Relationship.create({
+            user_id: dbUser.user_id,
+            interest_id: interests[i]
+        })
+      }
       res.json(dbUser);
     })
       .catch(function(err) {
@@ -82,7 +91,8 @@ app.post("/api/user", function(req, res) {
  app.post("/api/newMessage", function(req, res) {
     db.Message.create({
       text: req.body.text,
-      complete: req.body.complete
+      recipient: req.body.recipient_id,
+      sender: req.body.sender_id
     }).then(function(dbMessage) {
       res.json(dbMessage);
     })
@@ -109,13 +119,23 @@ app.post("/api/user", function(req, res) {
 app.put("/api/user", function(req, res) {
 
      db.User.update({
-      text: req.body.text,
-      complete: req.body.complete
-    }, {
+      user_name: req.body.user_name,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude,
+      picture: req.body.picture,
+      }, {
       where: {
         id: req.body.id
       }
     }).then(function(dbUser) {
+      
+      for (var i = 0; i<req.body.interests.length; i++)
+      {
+        db.User_Interest_Relationship.create({
+            user_id: req.body.id,
+            interest_id: interests[i]
+        })
+      }
       res.json(dbUser);
     })
       .catch(function(err) {
