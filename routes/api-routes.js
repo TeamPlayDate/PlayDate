@@ -72,13 +72,19 @@ app.post("/api/user", function(req, res) {
       longitude: req.body.longitude,
       picture: req.body.picture
     }).then(function(dbUser) {
-      
+       var count = 0;
        userId = dbUser.user_id;
        for (var i = 0; i<req.body.interests.length; i++)
       {
         db.User_Interest_Relationship.create({
             user_id: userId,
             interest_id: req.body.interests[i]
+        }).then(function(result){
+            count++;
+            if (count == req.body.interests.length)
+            {
+              res.json(dbUser);
+            }
         }).catch(function(err) {
          console.log(err);
         });
@@ -143,6 +149,12 @@ app.put("/api/user", function(req, res) {
         db.User_Interest_Relationship.create({
             user_id: userId,
             interest_id: req.body.interests[i]
+        }).then(function(result){
+            count++;
+            if (count == req.body.interests.length)
+            {
+              res.json(dbUser);
+            }
         }).catch(function(err) {
          console.log(err);
         });
