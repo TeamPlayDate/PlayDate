@@ -32,47 +32,95 @@ module.exports = function(app) {
   });
 });
 
-//   app.get("/api/messages/all", function(req, res) {
-//     Message.findAll({}).then(function(results) {
-//       res.json(results);
-//     });
-//   });
 
-//   app.get("/api/users/all", function(req, res) {
-//     User.findAll({}).then(function(results) {
-//       res.json(results);
-//     });
-//   });
+ // app.get("/api/messages", function(req, res) {
+ //    var query = {};
+ //    if (req.query.user_id) {
+ //      query.UserId = req.query.user_id;
+ //    }
+   
+ //    db.Messages.findAll({
+ //      where: query,
+ //      include: [db.User]
+ //    }).then(function(dbMessages) {
+ //      res.json(dbMessages);
+ //    });
+ //  });
 
-//  // app.post
+//grabs all messages
+  app.get("/api/messages/all", function(req, res) {
+    Messages.findAll({}).then(function(results) {
+      res.json(results);
+    });
+  });
+
+//grabs all users
+  app.get("/api/users/all", function(req, res) {
+    User.findAll({}).then(function(results) {
+      res.json(results);
+    });
+  });
+
+
 //  //  create new user
 //   app.post("/api/new", function(req, res) {
-// create a new message 
-//   });
+app.post("/api/user", function(req, res) {
 
+    db.User.create({
+      text: req.body.text,
+      complete: req.body.complete
+    }).then(function(dbUser) {
+      res.json(dbUser);
+    })
+      .catch(function(err) {
+        res.json(err);
+      });
+  });
+
+
+// create a new message 
+ app.post("/api/newMessage", function(req, res) {
+    db.Message.create({
+      text: req.body.text,
+      complete: req.body.complete
+    }).then(function(dbMessage) {
+      res.json(dbMessage);
+    })
+      .catch(function(err) {
+    res.json(err);
+      });
+  });
  
 
 
-//   // app.delete
-//   // delete messages
-
-//   app.delete("/api/users/messages", function(req, res) {
-//     db.User_name.destroy({
-//       where: {
-//         id: req.params.id
-//       }
-//     }).then(function(dbAuthor) {
-//       res.json(dbAuthor);
-//     });
-//   });
+//This function lets the user delete messages
+  app.delete("/api/users/messages", function(req, res) {
+    db.Messages.destroy({
+      where: {
+        id: req.params.id
+      }
+    }).then(function(dbMessage) {
+      res.json(dbMessage);
+    });
+  });
 
 
-
-//   app.update
 //   update user information 
+app.put("/api/user", function(req, res) {
 
-//   // PUT route for updating todos. The updated todo will be available in req.body
-//   app.put("/api/todos", function(req, res) {
+     db.User.update({
+      text: req.body.text,
+      complete: req.body.complete
+    }, {
+      where: {
+        id: req.body.id
+      }
+    }).then(function(dbUser) {
+      res.json(dbUser);
+    })
+      .catch(function(err) {
+       res.json(err);
+      });
+  });
 
-//   });
 };
