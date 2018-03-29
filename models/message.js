@@ -24,6 +24,9 @@ module.exports = function(sequelize, DataTypes) {
         }
       }
 
+    },{
+        timestamps: false
+
       });
 	
     Message.associate = function(models){

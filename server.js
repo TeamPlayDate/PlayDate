@@ -34,15 +34,15 @@ require("./routes/api-routes.js")(app);
 require("./routes/html-routes.js")(app);
 // Starts the server to begin listening
 // =============================================================
-// db.sequelize.sync({}).then(function(){
-// 	for (var i = 0; i < interests.length; i++)
-//     {
-//     	db.Interest.upsert({id: interests[i].id, name: interests[i].name});
-//     }
+db.sequelize.sync({force: true}).then(function(){
+	for (var i = 0; i < interests.length; i++)
+    {
+    	db.Interest.upsert({id: interests[i].id, name: interests[i].name});
+    }
     app.listen(PORT, function() {
     console.log("App listening on PORT " + PORT);
     });
-// });
+});
 
 
 

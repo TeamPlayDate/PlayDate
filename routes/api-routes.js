@@ -49,14 +49,14 @@ module.exports = function(app) {
 
 //grabs all messages
   app.get("/api/messages/all", function(req, res) {
-    Messages.findAll({}).then(function(results) {
+    db.Messages.findAll({}).then(function(results) {
       res.json(results);
     });
   });
 
 //grabs all users
   app.get("/api/users/all", function(req, res) {
-    User.findAll({}).then(function(results) {
+    db.User.findAll({}).then(function(results) {
       res.json(results);
     });
   });
@@ -65,25 +65,30 @@ module.exports = function(app) {
 //  //  create new user
 //   app.post("/api/new", function(req, res) {
 app.post("/api/user", function(req, res) {
-
+    var userId;
     db.User.create({
       user_name: req.body.user_name,
       latitude: req.body.latitude,
       longitude: req.body.longitude,
-      picture: req.body.picture,
+      picture: req.body.picture
     }).then(function(dbUser) {
-    	 for (var i = 0; i<req.body.interests.length; i++)
+      
+       userId = dbUser.user_id;
+       for (var i = 0; i<req.body.interests.length; i++)
       {
         db.User_Interest_Relationship.create({
-            user_id: dbUser.user_id,
-            interest_id: interests[i]
-        })
+            user_id: userId,
+            interest_id: req.body.interests[i]
+        }).catch(function(err) {
+         console.log(err);
+        });
       }
-      res.json(dbUser);
-    })
-      .catch(function(err) {
-        res.json(err);
+     
+    }).catch(function(err) {
+       res.json(err);
       });
+ 
+   
   });
 
 
@@ -117,30 +122,40 @@ app.post("/api/user", function(req, res) {
 
 //   update user information 
 app.put("/api/user", function(req, res) {
-
+     var userId;
      db.User.update({
       user_name: req.body.user_name,
       latitude: req.body.latitude,
       longitude: req.body.longitude,
-      picture: req.body.picture,
-      }, {
-      where: {
-        id: req.body.id
-      }
+      picture: req.body.picture
+      }, 
+      {
+          where: {
+            id: req.body.id
+          }
+      
     }).then(function(dbUser) {
       
-      for (var i = 0; i<req.body.interests.length; i++)
+       userId = dbUser.dataValues.user_id;
+       
+  for (var i = 0; i<req.body.interests.length; i++)
       {
         db.User_Interest_Relationship.create({
-            user_id: req.body.id,
-            interest_id: interests[i]
-        })
+            user_id: userId,
+            interest_id: req.body.interests[i]
+        }).catch(function(err) {
+         console.log(err);
+        });
       }
-      res.json(dbUser);
-    })
-      .catch(function(err) {
-       res.json(err);
-      });
-  });
 
-};
+     
+    }).catch(function(err) {
+       res.json(err);
+    });
+ 
+
+});
+
+
+
+}

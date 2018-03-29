@@ -10,7 +10,7 @@ else{
   host: "localhost",
   user: "root",
   password: "MySQLPassword1!",
-  database: "friends_db"
+  database: "play_db"
   });
 }
 

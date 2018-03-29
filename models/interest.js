@@ -8,7 +8,10 @@ module.exports = function(sequelize, DataTypes) {
         	},
 
         name: DataTypes.STRING
-	});
+        },{
+            timestamps: false
+        
+    });
 
 	return Interest;
 };

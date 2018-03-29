@@ -6,10 +6,10 @@ module.exports = function(sequelize, DataTypes) {
       autoIncrement: true,
     },
   
-	user_name: {
+	  user_name: {
 	  type: DataTypes.STRING,
 	  required: true
-	},
+	  },
 
   	latitude: {
   		type: DataTypes.INTEGER,
@@ -31,13 +31,11 @@ module.exports = function(sequelize, DataTypes) {
   		validate: {
   			len: [1]
   		}
-  	},
+  	}
+    },{
+      timestamps: false 
 
   });
-
-	User.associate = function(models){
-		User.hasMany(models.User_Interest_Relationship, {as: "interests"});
-	};
 
 	return User;
 
