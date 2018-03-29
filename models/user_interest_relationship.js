@@ -21,7 +21,6 @@ module.exports = function(sequelize, DataTypes) {
            timestamps: false
     });
 
- 
-
+  
     return User_Interest_Relationship;
 };

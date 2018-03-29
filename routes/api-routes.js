@@ -48,8 +48,10 @@ module.exports = function(app) {
  //  });
 
 //grabs all messages
-  app.get("/api/messages/all", function(req, res) {
-    db.Messages.findAll({}).then(function(results) {
+  app.get("/api/messages/:id", function(req, res) {
+    db.Message.findAll({where: {
+      recipient_id: req.params.id
+    }}).then(function(results) {
       res.json(results);
     });
   });
@@ -101,14 +103,15 @@ app.post("/api/user", function(req, res) {
 // create a new message 
  app.post("/api/newMessage", function(req, res) {
     db.Message.create({
-      text: req.body.text,
-      recipient: req.body.recipient_id,
-      sender: req.body.sender_id
+      body: req.body.text,
+      title: req.body.title,
+      recipient_id: req.body.recipient_id,
+      sender_id: req.body.sender_id
     }).then(function(dbMessage) {
       res.json(dbMessage);
     })
       .catch(function(err) {
-    res.json(err);
+      res.json(err);
       });
   });
  
@@ -128,7 +131,7 @@ app.post("/api/user", function(req, res) {
 
 //   update user information 
 app.put("/api/user", function(req, res) {
-     var userId;
+     
      db.User.update({
       user_name: req.body.user_name,
       latitude: req.body.latitude,

@@ -22,19 +22,23 @@ module.exports = function(sequelize, DataTypes) {
       validate: {
         len: [1]
         }
+      },
+
+      sender_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+      },
+
+      recipient_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
       }
 
     },{
         timestamps: false
 
       });
-	
-    Message.associate = function(models){
-
-	    Message.belongsTo(models.User,{as:'Sender',foreignKey:"user_id"});
-	    Message.belongsTo(models.User,{as:'Recipient',foreignKey:"user_id"})
-
-    };
+   
 
 	return Message;
 
