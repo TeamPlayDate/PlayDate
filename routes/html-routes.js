@@ -5,31 +5,47 @@
 // Dependencies
 // =============================================================
 var path = require("path");
-
+const passport = require('passport');
 // Routes
 // =============================================================
 module.exports = function(app) {
 
-  // Each of the below routes just handles the HTML page that the user gets sent to.
 
-  // index route loads view.html
-  app.get("/", function(req, res) {
-    res.sendFile(path.join(__dirname, "../public/index.html"));
-  });
 
-  // // cms route loads cms.html
-  // app.get("/cms", function(req, res) {
-  //   res.sendFile(path.join(__dirname, "../public/cms.html"));
-  // });
+/* GET home page. */
+app.get('/', function(req, res, next) {
+  res.render('index');
+  //res.sendFile(path.join(__dirname, "../public/index.html"));
+});
 
-  // // blog route loads blog.html
-  // app.get("/blog", function(req, res) {
-  //   res.sendFile(path.join(__dirname, "../public/blog.html"));
-  // });
+app.get('/about', function(req, res, next) {
+  res.render('about');
 
-  // // authors route loads author-manager.html
-  // app.get("/authors", function(req, res) {
-  //   res.sendFile(path.join(__dirname, "../public/author-manager.html"));
-  // });
+});
 
+app.get('/signup', function(req, res, next) {
+  //res.render('index.html');
+  res.sendFile(path.join(__dirname, "../public/signup.html"));
+});
+
+app.get('/user', function(req, res, next) {
+  //res.render('index.html');
+  res.sendFile(path.join(__dirname, "../public/user.html"));
+});
+
+app.get('/login', passport.authenticate('auth0', {
+  clientID: process.env.AUTH0_CLIENT_ID,
+  domain: process.env.AUTH0_DOMAIN,
+  redirectUri: process.env.AUTH0_CALLBACK_URL,
+  responseType: 'code',
+  audience: 'https://' + process.env.AUTH0_DOMAIN + '/userinfo',
+  scope: 'openid profile'}),
+  function(req, res) {
+    res.redirect("/");
+});
+
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/');
+});
 };

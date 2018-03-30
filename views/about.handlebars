@@ -1,0 +1,151 @@
+<!--NavBar-->
+
+<nav class="navbar navbar-expand-lg sticky-top navbar-dark">
+            <a class="navbar-brand" href="index.html">
+             ODakota</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/app">App</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <div class="container-fluid">
+        <!-- OUR MISSION -->
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10 about">
+            <h1 class="titles text-center">- Our Mission -</h1>
+            <div class="description">
+                <p>
+                    We host meet-up groups and allow users to find other individuals that share their common interests, dreams and goals and allow people to form teams and alliances with other individuals based on their interests in order to help them plan, strategize and implement their common goals.  
+                </p>
+            </div>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <!-- ABOUT US -->
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10 about">
+                    <h1 class="titles text-center">- About Us -</h1>
+                        <div align="center" class="description">
+                <p>
+                   ODakota is an app that aims to end the environmental limits of associates and team members. ODakota is an app that aims to assist entrepreneurs, coders and other teams find other equally skilled and like minded team-members and associates to join their cause.<br />
+                    This team was organized and received guidance from mentors at Northwestern
+                    Coding BootCamp in Evanston, Illinois.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+
+
+        <div class="row">
+            <div class="col-md-3 text-center">
+                <div class="pic"><img src="assets/images/Ahmed.jpg" alt="" class="aboutimage"></div>
+                <h4 class="name"><strong>Ahmed Akhtar</strong></h4>
+                <h6><span>Developer & ACTG/FIN/DATA</span></h6>
+                <div class="social">
+                    <a class="logo" href="https://github.com/ahmedakhtar11"><img border="0" alt="Github" src="assets/images/octocat2.png" height="60" width="60"></a>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <div class="pic"><img src="assets/images/chris3.png" alt="" class="aboutimage"></div>
+                <h4 class="name"><strong>Austin Tsiaperas</strong></h4>
+                <h6><span>Developer</span></h6>
+                <div class="social">
+                    <a class="logo" href="https://github.com/jtsiaperas"><img border="0" alt="Github" src="assets/images/octocat2.png" height="60" width="60"></a>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <div class="pic"><img src="assets/images/team-3.jpg" alt="" class="aboutimage"></div>
+                <h4 class="name"><strong>Shari</strong></h4>
+                <h6><span>Developer</span></h6>
+                <div class="social">
+                    <a class="logo" href="https://github.com/Shari721"><img border="0" alt="Github" src="assets/images/octocat2.png" height="60" width="60"></a>
+                </div>
+            </div>
+
+
+            <div class="col-md-3 text-center">
+                <div class="pic"><img src="assets/images/team-3.jpg" alt="" class="aboutimage"></div>
+                <h4 class="name"><strong>Oscar</strong></h4>
+                <h6><span>Developer</span></h6>
+                <div class="social">
+                    <a class="logo" href="https://github.com/obuenavidez"><img border="0" alt="Github" src="assets/images/octocat2.png" height="60" width="60"></a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+        <!--Start Contact Section-->
+        <section id="contact">
+            <div class="container">
+                <div class="well well-sm">
+                    <h1><strong>Contact Us</strong></h1>
+                    <div class="row">
+                        <div class="col-md-7">
+
+                            <div id="map"></div>
+                            <script>
+                                function initMap() {
+                                    // Create a map object and specify the DOM element for display.
+                                    var map = new google.maps.Map(document.getElementById('map'), {
+                                        center: { lat: 42.057900, lng: -87.676171 },
+                                        // Set mapTypeId to SATELLITE in order
+                                        // to activate satellite imagery.
+                                        mapTypeId: 'satellite',
+                                        zoom: 18
+                                    });
+                                }
+
+                            </script>
+                            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-ASDRLo3YobFTHAGt2h_1_uUoRgdhcr0&callback=initMap">
+                                async defer></script>
+                        </div>
+
+                        <div class="col-md-5">
+                            <h4><strong>Get in Touch</strong></h4>
+                            <form>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="" value="" placeholder="Name">
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control" name="" value="" placeholder="E-mail">
+                                </div>
+                                <div class="form-group">
+                                    <input type="tel" class="form-control" name="" value="" placeholder="Phone">
+                                </div>
+                                <div class="form-group">
+                                    <textarea class="form-control" name="" rows="3" placeholder="Message"></textarea>
+                                </div>
+                                <button class="btn btn-success" type="submit" name="button">
+                                    <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Submit
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+        </section>
+
+        <!--Adding Footer Bootstrap-->
+    <footer id="footers" class="fluid-container text-center footers">
+        Copyright 2018 ODakota
+    </footer>

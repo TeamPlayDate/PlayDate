@@ -34,23 +34,22 @@ dotenv.load();
 // const routes = require('./routes/index');
 // const user = require('./routes/user');
 
-//This will configure Passport to use Auth0
+// This will configure Passport to use Auth0
 const strategy = new Auth0Strategy(
   {
     domain: process.env.AUTH0_DOMAIN,
     clientID: process.env.AUTH0_CLIENT_ID,
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
     callbackURL:
-      process.env.AUTH0_CALLBACK_URL || 'http://localhost:8080/callback'
+      process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback'
   },
   function(accessToken, refreshToken, extraParams, profile, done) {
-   // accessToken is the token to call Auth0 API (not needed in the most cases)
-   // extraParams.id_token has the JSON Web Token
-   // profile has all the information from the user
+    // accessToken is the token to call Auth0 API (not needed in the most cases)
+    // extraParams.id_token has the JSON Web Token
+    // profile has all the information from the user
     return done(null, profile);
   }
 );
-
 
 passport.use(strategy);
 
@@ -63,9 +62,9 @@ passport.deserializeUser(function(user, done) {
   done(null, user);
 });
 
-// // view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'pug');
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 
 // app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 // app.set("view engine", "handlebars");
@@ -91,58 +90,58 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 
 // Handle auth failure error messages
-// app.use(function(req, res, next) {
-//  if (req && req.query && req.query.error) {
-//    req.flash("error", req.query.error);
-//  }
-//  if (req && req.query && req.query.error_description) {
-//    req.flash("error_description", req.query.error_description);
-//  }
-//  next();
-// });
+app.use(function(req, res, next) {
+ if (req && req.query && req.query.error) {
+   req.flash("error", req.query.error);
+ }
+ if (req && req.query && req.query.error_description) {
+   req.flash("error_description", req.query.error_description);
+ }
+ next();
+});
 
-// // Check logged in
-// app.use(function(req, res, next) {
-//   res.locals.loggedIn = false;
-//   if (req.session.passport && typeof req.session.passport.user != 'undefined') {
-//     res.locals.loggedIn = true;
-//   }
-//   next();
-// });
+// Check logged in
+app.use(function(req, res, next) {
+  res.locals.loggedIn = false;
+  if (req.session.passport && typeof req.session.passport.user != 'undefined') {
+    res.locals.loggedIn = true;
+  }
+  next();
+});
 
-// // app.use('/', routes);
-// // app.use('/user', user);
+app.use('/', routes);
+app.use('/user', user);
 
-// // catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   const err = new Error('Not Found');
-//   err.status = 404;
-//   next(err);
-// });
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 
-// // error handlers
+// error handlers
 
-// // development error handler
-// // will print stacktrace
-// if (app.get('env') === 'development') {
-//   app.use(function(err, req, res, next) {
-//     res.status(err.status || 500);
-//     res.render('error', {
-//       message: err.message,
-//       error: err
-//     });
-//   });
-// }
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
+}
 
 // production error handler
 // no stacktraces leaked to user
-// app.use(function(err, req, res, next) {
-//   res.status(err.status || 500);
-//   res.render('error', {
-//     message: err.message,
-//     error: {}
-//   });
-// });
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
+});
 
 
 
@@ -162,17 +161,6 @@ app.use(express.static("app/public"));
 // =============================================================
 require("./routes/api-routes.js")(app);
 require("./routes/html-routes.js")(app);
-/*Setting up HandleBars in the view directory*/
-app.set('views', path.join(__dirname, 'views'));
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
-
-/*Setting up CSS, JS, and Images to Load from Public Directory*/
-app.use(express.static(path.join(__dirname, '/public')));
-
-// /*Setting port to 3000*/
-// app.set('port', (process.env.PORT || 3000));
-
 // Starts the server to begin listening
 // =============================================================
 db.sequelize.sync({force: true}).then(function(){
@@ -185,17 +173,37 @@ db.sequelize.sync({force: true}).then(function(){
     });
 });
 
+/*Setting up HandleBars in the view directory*/
+app.set('views', path.join(__dirname, 'views'));
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
-// var s3 = new aws.S3();
+/*Setting up CSS, JS, and Images to Load from Public Directory*/
+app.use(express.static(path.join(__dirname, '/public')));
 
-// var s3Bucket = new aws.S3( { params: {Bucket: 'codingproject2'} } );
+/*Setting port to 3000*/
+app.set('port', (process.env.PORT || 3000));
+
+/*Setting Handle Bar Route for Index page*/
+app.get('/', function(req, res){
+	res.render('index');
+});
+
+/*Setting Handle Bar Route for Index page*/
+app.get('/about', function(req, res){
+	res.render('about');
+});
+
+module.exports = app;
+// var s3 = new AWS.S3();
+
+// var s3Bucket = new AWS.S3( { params: {Bucket: 'codingproject2'} } )
 
 // var data = {Key: imageName, Body: imageFile};
-
 // s3Bucket.putObject(data, function(err, data){
 //   if (err) 
 //     { console.log('Error uploading data: ', data); 
 //     } else {
-//       console.log('succesfully uploaded the image!');
+//       console.log('succesfully uploaded the image!';
 //     }
 // });
