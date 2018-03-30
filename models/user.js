@@ -1,12 +1,12 @@
 module.exports = function(sequelize, DataTypes) {
-	var User = sequelize.define("User",{
-    user_id: {
+	var user = sequelize.define("user",{
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
   
-	  user_name: {
+	  name: {
 	  type: DataTypes.STRING,
 	  required: true
 	  },
@@ -37,7 +37,10 @@ module.exports = function(sequelize, DataTypes) {
 
   });
   
- 
-	return User;
+  user.associate = function(models){
+      user.hasMany(models.user_interest_relationship);
+  };
+
+	return user;
 
 };

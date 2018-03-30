@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-	var Interest = sequelize.define("Interest",{
+	var interest = sequelize.define("interest",{
         id: {
         	    type: DataTypes.INTEGER,
 
@@ -12,8 +12,11 @@ module.exports = function(sequelize, DataTypes) {
             timestamps: false
         
     });
-
     
-	return Interest;
+    interest.associate = function(models){
+        interest.hasMany(models.user_interest_relationship);
+    }
+    
+	return interest;
 };
 

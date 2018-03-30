@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-	var User_Interest_Relationship = sequelize.define("User_Interest_Relationship",{
+	var user_interest_relationship = sequelize.define("user_interest_relationship",{
         id: {
         	    type: DataTypes.INTEGER,
                 allowNull: false,
@@ -7,12 +7,12 @@ module.exports = function(sequelize, DataTypes) {
                 primaryKey: true
             }
         ,
-        user_id:
+        userId:
         {
           type: DataTypes.INTEGER,
           allowNull: false
         },
-        interest_id:
+        interestId:
         {
           type: DataTypes.INTEGER,
           allowNull: false
@@ -20,7 +20,11 @@ module.exports = function(sequelize, DataTypes) {
         },{  
            timestamps: false
     });
-
+    
+    user_interest_relationship.associate = function(models){
+        user_interest_relationship.belongsTo(models.user);
+        user_interest_relationship.belongsTo(models.interest);
+    };
   
-    return User_Interest_Relationship;
+    return user_interest_relationship;
 };

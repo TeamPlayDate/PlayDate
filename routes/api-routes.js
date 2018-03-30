@@ -35,13 +35,13 @@ module.exports = function(app) {
 
  // app.get("/api/messages", function(req, res) {
  //    var query = {};
- //    if (req.query.user_id) {
- //      query.UserId = req.query.user_id;
+ //    if (req.query.id) {
+ //      query.UserId = req.query.id;
  //    }
    
- //    db.Messages.findAll({
+ //    db.messages.findAll({
  //      where: query,
- //      include: [db.User]
+ //      include: [db.user]
  //    }).then(function(dbMessages) {
  //      res.json(dbMessages);
  //    });
@@ -49,17 +49,52 @@ module.exports = function(app) {
 
 //grabs all messages
   app.get("/api/messages/:id", function(req, res) {
-    db.Message.findAll({where: {
-      recipient_id: req.params.id
+    db.message.findAll({where: {
+      recipientId: req.params.id
     }}).then(function(results) {
       res.json(results);
     });
   });
 
 //grabs all users
-  app.get("/api/users/all", function(req, res) {
-    db.User.findAll({}).then(function(results) {
-      res.json(results);
+  app.get("/api/users/all", function(req, res){
+    db.user.findAll({
+      include:[{model: db.user_interest_relationship,
+          include: [{model: db.interest}]
+      }]
+    }).then(function(results){
+
+        // const resObj = users.map(user => {
+
+        //   return Object.assign({},
+        //       {
+        //         userId: user.id,
+        //         user_name: user.name,
+        //         latitude: user.latitude,
+        //         longitude: user.longitude,
+        //         picture: user.picture,
+        //         relationships: user.user_interest_relationship.map(relationship => {
+                     
+        //             return Object.assign({},
+        //                 {
+        //                    relationship_id: relationship.id,
+        //                    interestId: relationship.interestId,
+        //                    interest: user_interest_relationship.interest.map(interest => {
+        //                         return Object.assign(
+        //                           {},
+        //                           {
+        //                               interest: interest.name 
+        //                           });
+        //                    })
+        //                 }
+        //             );  
+        //         })
+        //       }
+        //   );
+        // })
+
+    
+    res.json(results);
     });
   });
 
@@ -68,19 +103,19 @@ module.exports = function(app) {
 //   app.post("/api/new", function(req, res) {
 app.post("/api/user", function(req, res) {
     var userId;
-    db.User.create({
-      user_name: req.body.user_name,
+    db.user.create({
+      name: req.body.name,
       latitude: req.body.latitude,
       longitude: req.body.longitude,
       picture: req.body.picture
     }).then(function(dbUser) {
        var count = 0;
-       userId = dbUser.user_id;
+       userId = dbUser.id;
        for (var i = 0; i<req.body.interests.length; i++)
       {
-        db.User_Interest_Relationship.create({
-            user_id: userId,
-            interest_id: req.body.interests[i]
+        db.user_interest_relationship.create({
+            userId: userId,
+            interestId: req.body.interests[i]
         }).then(function(result){
             count++;
             if (count == req.body.interests.length)
@@ -102,11 +137,11 @@ app.post("/api/user", function(req, res) {
 
 // create a new message 
  app.post("/api/newMessage", function(req, res) {
-    db.Message.create({
+    db.message.create({
       body: req.body.text,
       title: req.body.title,
-      recipient_id: req.body.recipient_id,
-      sender_id: req.body.sender_id
+      recipientId: req.body.recipientId,
+      senderId: req.body.senderId
     }).then(function(dbMessage) {
       res.json(dbMessage);
     })
@@ -119,7 +154,7 @@ app.post("/api/user", function(req, res) {
 
 //This function lets the user delete messages
   app.delete("/api/users/messages", function(req, res) {
-    db.Messages.destroy({
+    db.messages.destroy({
       where: {
         id: req.params.id
       }
@@ -132,26 +167,26 @@ app.post("/api/user", function(req, res) {
 //   update user information 
 app.put("/api/user", function(req, res) {
      
-     db.User.update({
-      user_name: req.body.user_name,
+     db.user.update({
+      name: req.body.name,
       latitude: req.body.latitude,
       longitude: req.body.longitude,
       picture: req.body.picture
       }, 
       {
           where: {
-            user_id: req.body.user_id
+            id: req.body.id
           }
       
     }).then(function(dbUser) {
       
-      db.User_Interest_Relationship.destroy({where: {user_id: req.body.user_id}}).then(function(){
+      db.user_interest_relationship.destroy({where: {id: req.body.id}}).then(function(){
           var count = 0;
           for (var i = 0; i<req.body.interests.length; i++)
           {
-              db.User_Interest_Relationship.upsert({
-                  user_id: req.body.user_id,
-                  interest_id: req.body.interests[i]
+              db.user_interest_relationship.upsert({
+                  userId: req.body.id,
+                  interestId: req.body.interests[i]
               }).then(function(result){
                   count++;
                   if (count == req.body.interests.length)

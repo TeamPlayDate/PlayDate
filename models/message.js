@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-	var Message = sequelize.define("Message",{
+	var message = sequelize.define("message",{
 
       id: {
            type: DataTypes.INTEGER,
@@ -24,12 +24,12 @@ module.exports = function(sequelize, DataTypes) {
         }
       },
 
-      sender_id: {
+      senderId: {
       type: DataTypes.INTEGER,
       allowNull: false
       },
 
-      recipient_id: {
+      recipientId: {
       type: DataTypes.INTEGER,
       allowNull: false
       }
@@ -38,9 +38,12 @@ module.exports = function(sequelize, DataTypes) {
         timestamps: false
 
       });
-   
+   message.associate = function(models){
+      message.belongsTo(models.user, {as: "sender"});
+      message.belongsTo(models.user, {as: "recipient"});
+   }
 
-	return Message;
+	return message;
 
 
 };
