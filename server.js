@@ -8,6 +8,10 @@ var interests = require('./db/interests.js')
 // =============================================================
 var express = require("express");
 var bodyParser = require("body-parser");
+var path = require('path')
+
+// Require Handlebars.
+var exphbs = require("express-handlebars");
 
 var db = require("./models");
 var aws = require('aws-sdk');
@@ -46,7 +50,26 @@ db.sequelize.sync({force: true}).then(function(){
     });
 });
 
+/*Setting up HandleBars in the view directory*/
+app.set('views', path.join(__dirname, 'views'));
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
+/*Setting up CSS, JS, and Images to Load from Public Directory*/
+app.use(express.static(path.join(__dirname, '/public')));
+
+/*Setting port to 3000*/
+app.set('port', (process.env.PORT || 3000));
+
+/*Setting Handle Bar Route for Index page*/
+app.get('/', function(req, res){
+	res.render('index');
+});
+
+/*Setting Handle Bar Route for Index page*/
+app.get('/about', function(req, res){
+	res.render('about');
+});
 
 // var s3 = new AWS.S3();
 
