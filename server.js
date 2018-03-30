@@ -1,60 +1,37 @@
-// *********************************************************************************
-// Server.js - This file is the initial starting point for the Node/Express server.
-// *********************************************************************************
-var interests = require('./db/interests.js')
-// Dependencies
-// =============================================================
+//Require Express
 var express = require("express");
-var bodyParser = require("body-parser");
 
-var db = require("./models");
-var aws = require('aws-sdk');
-// Sets up the Express App
-// =============================================================
+// Require Path.
+var path = require('path')
+
+// Require Handlebars.
+var exphbs = require("express-handlebars");
 var app = express();
-var PORT = process.env.PORT || 8080;
+var PORT = process.env.PORT || 3000;
 
-require('dotenv').config();
+/*Setting up HandleBars in the view directory*/
+app.set('views', path.join(__dirname, 'views'));
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
-// Sets up the Express app to handle data parsing
+/*Setting up CSS, JS, and Images to Load from Public Directory*/
+app.use(express.static(path.join(__dirname, '/public')));
 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
-// parse application/json
-app.use(bodyParser.json());
+/*Setting port to 3000*/
+app.set('port', (process.env.PORT || 3000));
 
-// Static directory
-app.use(express.static("app/public"));
+/*Setting Handle Bar Route for Index page*/
+app.get('/', function(req, res){
+	res.render('index');
+});
 
-// AWS.config.loadFromPath('./config/aws.json');
+/*Setting Handle Bar Route for Index page*/
+app.get('/about', function(req, res){
+	res.render('about');
+});
 
-// Routes
-// =============================================================
-require("./routes/api-routes.js")(app);
-require("./routes/html-routes.js")(app);
-// Starts the server to begin listening
-// =============================================================
-// db.sequelize.sync({}).then(function(){
-// 	for (var i = 0; i < interests.length; i++)
-//     {
-//     	db.Interest.upsert({id: interests[i].id, name: interests[i].name});
-//     }
-    app.listen(PORT, function() {
-    console.log("App listening on PORT " + PORT);
-    });
-// });
+/*Setting the Server to start Listening*/
+app.listen(app.get('port'), function(){
+console.log("App now listening at localhost:" + app.get('port'));
+});
 
-
-
-// var s3 = new AWS.S3();
-
-// var s3Bucket = new AWS.S3( { params: {Bucket: 'codingproject2'} } )
-
-// var data = {Key: imageName, Body: imageFile};
-// s3Bucket.putObject(data, function(err, data){
-//   if (err) 
-//     { console.log('Error uploading data: ', data); 
-//     } else {
-//       console.log('succesfully uploaded the image!';
-//     }
-// });
