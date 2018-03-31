@@ -7,8 +7,8 @@ module.exports = function(sequelize, DataTypes) {
     },
   
 	  name: {
-	  type: DataTypes.STRING,
-	  required: true
+	  type: DataTypes.STRING
+	  
 	  },
     
     email: {
