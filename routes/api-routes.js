@@ -86,8 +86,8 @@ app.post("/api/user", ensureLoggedIn, function(req, res) {
 
     request("https://maps.googleapis.com/maps/api/geocode/json?components=postal_code:"+zip+"&key="+api_key, function(err,data) {
     console.log(data);
-    lat = data.results.geometry.location.latitude;
-    lon = data.results.geometry.location.longitude;
+    lat = data.results.geometry.location.lat;
+    lon = data.results.geometry.location.lng;
     console.log(lat);
     console.log(lon);
     db.user.create({
