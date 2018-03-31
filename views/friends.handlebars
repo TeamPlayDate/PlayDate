@@ -26,7 +26,7 @@
     </nav>
 
 <div class="container">
-{{friends}}
+
 {{#each friends}}
     <div class="row">
     <div class="col">
@@ -44,9 +44,10 @@
                 </li>
                 <h3>Common Interests</h3>
                 {{#each common}}
-                    <li><strong>{{this.name}}</strong></li>     
+                    <li><strong>{{this}}</strong></li>     
                 {{/each}}
                 </ul>
+                <button onclick="sendMessage()" value={{this.id}}>Send a Message</button>
             </div>
 
         </div>
@@ -55,3 +56,13 @@
     </div>
 {{/each}}
 </div>
+
+<script>
+$(document).ready(function(){
+    $("button").on("click", function(event){
+    var recipient = $(this).val();
+    alert(recipient);
+    location.href = "/messages/"+recipient;
+    });
+});
+</script>

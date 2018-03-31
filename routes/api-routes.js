@@ -61,6 +61,12 @@ module.exports = function(app) {
     });
   });
 
+  app.get("/messages/:id",ensureLoggedIn, function(req, res){
+     var recipientId = req.params.id;
+     res.render("sendMessage",{recipientId: recipientId});
+  
+  });
+
 //grabs all users
   app.get("/api/users/all", ensureLoggedIn, function(req, res){
     
@@ -99,11 +105,11 @@ module.exports = function(app) {
                 }
             }
             friend.common = matching;
-            users.push[friend];
+            users.push(friend);
             console.log(friend);
             }
        }
-    
+    console.log(users);
     res.render("friends",{friends:users});
     });
   });
@@ -173,7 +179,7 @@ app.get('/user', ensureLoggedIn, function(req, res) {
 // create a new message 
  app.post("/api/newMessage", ensureLoggedIn, function(req, res) {
     db.message.create({
-      body: req.body.text,
+      body: req.body.body,
       title: req.body.title,
       recipientId: req.body.recipientId,
       senderId: req.user.user_id
