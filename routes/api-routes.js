@@ -56,7 +56,8 @@ module.exports = function(app) {
     db.message.findAll({where: {
       recipientId: req.user.user_id
     }}).then(function(results) {
-      res.json(results);
+      
+      res.render("messages",{messsages:results});
     });
   });
 
@@ -77,31 +78,33 @@ module.exports = function(app) {
       }]
     }).then(function(results){
        
-       var friends = [];
+       var users = [];
        for(var i = 0; i <results.length; i++)
        {
-            console.log(user.user_interest_relationships[0].interest.name);
+            console.log(results[i].user_interest_relationships[i].interest);
+            
             var friend = results[i];
+            
             if (friend.id != user.id)
             {
-            var common = [];
+            var matching = [];
             for (var j=0; j<friend.user_interest_relationships.length; j++)
             {
                 for (var k=0; k<user.user_interest_relationships.length; k++)
                 {
                     if(friend.user_interest_relationships[j].interestId==user.user_interest_relationships[k].interestId)
                     {
-                        common.push(friend.user_interest_relationships[j].interest.name);
+                        matching.push(friend.user_interest_relationships[j].interest.name);
                     }
                 }
             }
-            friend.common = common;
-            friends.push[friend];
+            friend.common = matching;
+            users.push[friend];
             
             }
        }
     
-    res.render("friends",{friends:friends});
+    res.render("friends",{friends:users});
     });
   });
   });

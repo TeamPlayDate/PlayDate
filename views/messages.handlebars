@@ -13,7 +13,7 @@
                     <a class="nav-link" href="/user">My Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/api/messages">Messages</a>
+                    <a class="nav-link" href="/api/users/all">Meet somebody!</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/about">About</a>
@@ -27,26 +27,22 @@
 
 <div class="container">
 
-{{#each friends}}
+{{#each messages}}
     <div class="row">
     <div class="col">
 
         <div class = "card">
-        
+            
             <div class = "card-header">
-                {{name}}
+            From: {{sender}}  Subject: {{title}}
             </div>
     
             <div class = "card-body">
-                <ul>
-                <li>
-                <img src = {{picture}} />
-                </li>
-                <h3>Common Interests</h3>
-                {{#each common}}
-                    <li><strong>{{name}}</strong></li>     
-                {{/each}}
-                </ul>
+               
+                {{text}}
+                
+               
+                
             </div>
 
         </div>
