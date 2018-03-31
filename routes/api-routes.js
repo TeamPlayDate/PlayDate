@@ -85,9 +85,10 @@ app.post("/api/user", ensureLoggedIn, function(req, res) {
     var api_key = process.env.API_KEY;
 
     request("https://maps.googleapis.com/maps/api/geocode/json?components=postal_code:"+zip+"&key="+api_key, function(err,data) {
-    console.log(data.body.results);
-    lat = data.results.geometry.location.lat;
-    lon = data.results.geometry.location.lng;
+    var body = JSON.parse(data.body);
+    console.log(body);
+    lat = body.results[0].geometry.location.lat;
+    lon = body.results[0].geometry.location.lng;
     console.log(lat);
     console.log(lon);
     db.user.create({
