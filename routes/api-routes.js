@@ -1,6 +1,8 @@
 var db = require("../models");
 var aws = require('aws-sdk');
 var geocoder = require("geocoder");
+var request = require("request");
+
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 
 const S3_BUCKET = process.env.S3_BUCKET;
@@ -80,8 +82,9 @@ app.post("/api/user", ensureLoggedIn, function(req, res) {
     var zip = req.body.zipcode;
     var lat;
     var lon;
+    var api_key = process.env.API_KEY;
 
-    geocoder.geocode(zip, function(err,data) {
+    request("https://maps.googleapis.com/maps/api/geocode/json?components=postal_code:"+zip+"&key="+api_key, function(err,data) {
     console.log(data);
     lat = data.geometry.location.latitude;
     lon = data.geometry.location.longitude;
