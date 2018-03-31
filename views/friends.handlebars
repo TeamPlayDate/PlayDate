@@ -26,25 +26,25 @@
     </nav>
 
 <div class="container">
-{{friends}}
-{{#each friend}}
+
+{{#each friends}}
     <div class="row">
     <div class="col">
 
         <div class = "card">
         
             <div class = "card-header">
-                {{name}}
+                {{friends.name}}
             </div>
     
             <div class = "card-body">
                 <ul>
                 <li>
-                <img src = {{picture}} />
+                <img src = {{friends.picture}} />
                 </li>
                 <h3>Common Interests</h3>
                 {{#each common}}
-                    <li><strong>{{interest}}</strong></li>     
+                    <li><strong>{{interest.name}}</strong></li>     
                 {{/each}}
                 </ul>
             </div>
