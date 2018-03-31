@@ -56,12 +56,12 @@ function submitfunction(event) {
 	});
 
 	var name = $("#username").val().trim();
-    
+    var picture = $("#photo").val().trim();
     var zipcode = $("#zipcode").val().trim();
     
     var newUser = {
     	name: name,
-    	picture: "n/a",
+    	picture: picture,
     	zipcode: zipcode,
     	interests: interests
     };
@@ -84,12 +84,12 @@ function updatefunction(event) {
 	});
 
 	var name = $("#username").val().trim();
-    
+    var picture = $("#photo").val().trim();
     var zipcode = $("#zipcode").val().trim();
     
     var newUser = {
     	name: name,
-    	picture: "n/a",
+    	picture: picture,
     	zipcode: zipcode,
     	interests: interests
     };

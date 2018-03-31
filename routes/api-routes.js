@@ -82,7 +82,7 @@ module.exports = function(app) {
        for(var i = 0; i <results.length; i++)
        {
             console.log(results[i].user_interest_relationships[i].interest);
-            
+
             var friend = results[i];
             
             if (friend.id != user.id)
@@ -100,7 +100,7 @@ module.exports = function(app) {
             }
             friend.common = matching;
             users.push[friend];
-            
+            console.log(friend);
             }
        }
     

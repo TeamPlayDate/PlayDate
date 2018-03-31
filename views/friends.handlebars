@@ -26,7 +26,7 @@
     </nav>
 
 <div class="container">
-
+{{friends}}
 {{#each friends}}
     <div class="row">
     <div class="col">
@@ -34,17 +34,17 @@
         <div class = "card">
         
             <div class = "card-header">
-                {{name}}
+                {{this.name}}
             </div>
     
             <div class = "card-body">
                 <ul>
                 <li>
-                <img src = {{picture}} />
+                <img src = {{this.picture}} />
                 </li>
                 <h3>Common Interests</h3>
                 {{#each common}}
-                    <li><strong>{{name}}</strong></li>     
+                    <li><strong>{{this.name}}</strong></li>     
                 {{/each}}
                 </ul>
             </div>
