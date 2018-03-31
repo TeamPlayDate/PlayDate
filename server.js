@@ -170,7 +170,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 
 // Starts the server to begin listening
 // =============================================================
-db.sequelize.sync({force:true}).then(function(){
+db.sequelize.sync({}).then(function(){
 	for (var i = 0; i < interests.length; i++)
     {
     	db.interest.upsert({id: interests[i].id, name: interests[i].name});

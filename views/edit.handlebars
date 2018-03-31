@@ -9,7 +9,12 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
                 </li>
-                
+                <li class="nav-item">
+                    <a class="nav-link" href="/user">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/api/messages">Messages</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/about">About</a>
                 </li>
@@ -20,18 +25,18 @@
         </div>
     </nav>
    <div class="container">
-                <h3>Create your profile</h3>
+   <h3>Update your profile</h3>
                 <div class="row">
                     <!-- <div class="row"> -->
               <!-- <div class="col-md-2 col-sm-2 top-30">
                 <a class="btn btn-default" href="/blog">Go to Blog</a>
                 
               </div> -->
-                    
+              
                     <div class="col-md-6">
                         <form id="cms">
                             <div class="col-md-6">
-                               
+                                
                                  <hr>
                                 
                                 <input type="file" id="file-input">
@@ -59,7 +64,7 @@
       <div class="buttonscontainer" align="center">
 
       <button type="button" id="categorybutton" onclick="displayart()" class="btn btn-light">Arts</button>
-      <button type="button" id="categorybutton" onclick="displayfoodanddrink()" class="btn btn-light">Food and Drink</button>
+      <button type="button" id="categorybutton" onclick="displayfoodanddrink()" class="btn btn-light">Food And Drink</button>
       <button type="button" id="categorybutton" onclick="displayoutdoor()" class="btn btn-light">Fitness</button>
       <button type="button" id="categorybutton" onclick="displaysports()" class="btn btn-light">Sports</button>
       <button type="button" id="categorybutton" onclick="displaygames()" class="btn btn-light">Games</button>
@@ -132,7 +137,7 @@
 
       
                             <div align="center">
-                            <button type="button" id="submitactivities" class="btn btn-success" onclick="submitfunction()">Submit</button>
+                            <button type="button" id="submitactivities" class="btn btn-success" onclick="updateFunction()">Submit</button>
                             </div>
 
                                 <br>

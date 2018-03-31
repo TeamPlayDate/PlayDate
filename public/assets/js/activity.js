@@ -75,3 +75,31 @@ function submitfunction(event) {
 		});
 
 }
+
+function updatefunction(event) {
+	
+	var interests = [];
+	$("input[name = vehicle]:checked").each(function(){
+		interests.push($(this).val());
+	});
+
+	var name = $("#username").val().trim();
+    
+    var zipcode = $("#zipcode").val().trim();
+    
+    var newUser = {
+    	name: name,
+    	picture: "n/a",
+    	zipcode: zipcode,
+    	interests: interests
+    };
+    console.log(newUser);
+    $.ajax("api/user", {
+    	type: "PUT",
+		data: newUser
+		}).then(function() {
+			console.log("updated user");
+			location.replace("/user");
+		});
+
+}
