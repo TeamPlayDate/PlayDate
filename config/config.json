@@ -3,14 +3,14 @@
     "username": "root",
     "password": "MySQLPassword1!",
     "database": "play_db",
-    "host": "d6vscs19jtah8iwb.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
     "password":"MySQLPassword1!",
     "database": "play_db",
-    "host": "d6vscs19jtah8iwb.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "production": {

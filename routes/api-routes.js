@@ -1,5 +1,6 @@
 var db = require("../models");
 var aws = require('aws-sdk');
+const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 
 const S3_BUCKET = process.env.S3_BUCKET;
 aws.config.region = 'us-east-1';
@@ -48,7 +49,7 @@ module.exports = function(app) {
  //  });
 
 //grabs all messages
-  app.get("/api/messages/:id", function(req, res) {
+  app.get("/api/messages/:id", ensureLoggedIn, function(req, res) {
     db.message.findAll({where: {
       recipientId: req.params.id
     }}).then(function(results) {
@@ -57,7 +58,7 @@ module.exports = function(app) {
   });
 
 //grabs all users
-  app.get("/api/users/all", function(req, res){
+  app.get("/api/users/all", ensureLoggedIn, function(req, res){
     db.user.findAll({
       include:[{model: db.user_interest_relationship,
           include: [{model: db.interest}]
@@ -101,7 +102,7 @@ module.exports = function(app) {
 
 //  //  create new user
 //   app.post("/api/new", function(req, res) {
-app.post("/api/user", function(req, res) {
+app.post("/api/user", ensureLoggedIn, function(req, res) {
     var userId;
     db.user.create({
       name: req.body.name,
@@ -136,7 +137,7 @@ app.post("/api/user", function(req, res) {
 
 
 // create a new message 
- app.post("/api/newMessage", function(req, res) {
+ app.post("/api/newMessage", ensureLoggedIn, function(req, res) {
     db.message.create({
       body: req.body.text,
       title: req.body.title,
@@ -153,7 +154,7 @@ app.post("/api/user", function(req, res) {
 
 
 //This function lets the user delete messages
-  app.delete("/api/users/messages", function(req, res) {
+  app.delete("/api/users/messages", ensureLoggedIn, function(req, res) {
     db.messages.destroy({
       where: {
         id: req.params.id
@@ -165,7 +166,7 @@ app.post("/api/user", function(req, res) {
 
 
 //   update user information 
-app.put("/api/user", function(req, res) {
+app.put("/api/user", ensureLoggedIn, function(req, res) {
      
      db.user.update({
       name: req.body.name,

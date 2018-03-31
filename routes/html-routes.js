@@ -6,6 +6,7 @@
 // =============================================================
 var path = require("path");
 const passport = require('passport');
+const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 // Routes
 // =============================================================
 module.exports = function(app) {
@@ -24,13 +25,13 @@ app.get('/about', function(req, res, next) {
 });
 
 app.get('/signup', function(req, res, next) {
-  //res.render('index.html');
-  res.sendFile(path.join(__dirname, "../public/signup.html"));
+  res.render('signup');
+ 
 });
 
-app.get('/user', function(req, res, next) {
-  //res.render('index.html');
-  res.sendFile(path.join(__dirname, "../public/user.html"));
+app.get('/user', ensureLoggedIn, function(req, res, next) {
+  res.render('user');
+  
 });
 
 app.get('/login', passport.authenticate('auth0', {

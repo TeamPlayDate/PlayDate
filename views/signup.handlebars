@@ -1,0 +1,179 @@
+   <div class="container">
+                <div class="row">
+                    <!-- <div class="row"> -->
+              <!-- <div class="col-md-2 col-sm-2 top-30">
+                <a class="btn btn-default" href="/blog">Go to Blog</a>
+                
+              </div> -->
+            </div>
+                    <div class="col-md-6 col-md-offset-3">
+                        <form id="cms">
+                            <div class="col-md-6 col-md-offset-3">
+                                <h3>Create your profile</h3>
+                                 <hr>
+                                
+                                <input type="file" id="file-input">
+                                <br/>
+                                <hr>
+                                
+                                <p id="status">Please select a file to upload your Photo</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="title">User Name:</label>
+                                <input type="text" class="form-control" id="username">
+                                <br />
+                                <label for="title">Zipcode:</label>
+                                <input type="text" class="form-control" id="zipcode">
+
+      <div id="browsetopics" align="center"><h1>Select your interests</h1></div>
+      <!--Activity Category Buttons-->
+
+      <div class="buttonscontainer" align="center">
+
+      <button type="button" id="categorybutton" onclick="displayart()" class="btn btn-light">Arts</button>
+      <button type="button" id="categorybutton" onclick="displayfoodanddrink()" class="btn btn-light">Education</button>
+      <button type="button" id="categorybutton" onclick="displayoutdoor()" class="btn btn-light">Fitness</button>
+      <button type="button" id="categorybutton" onclick="displaysports()" class="btn btn-light">Hobbies</button>
+      <button type="button" id="categorybutton" onclick="displaygames()" class="btn btn-light">Games</button>
+
+      </div>
+
+      <br />
+      <br />
+
+
+    <container>
+    <div class="row">
+    <div class="col-md-3"></div>
+
+    <div class="col-md-5">
+
+    <!--Activity Card GetbootStrap-->
+
+    <div class="card bg-light mb-3" id="activitycard" style="max-width: 100rem;">
+    <div class="card-header"><strong>Activities</strong></div>
+    <div class="card-body">
+
+    <!--Activity Choices Art-->
+
+    <div class="card-text" id="activitylistart">
+    <input type="checkbox" name="vehicle" value="1"> Arts & Culture<br>
+    <input type="checkbox" name="vehicle" value="11"> Festivals<br>
+    <input type="checkbox" name="vehicle" value="12"> Museums<br>
+    <input type="checkbox" name="vehicle" value="13"> Concerts<br>
+    <input type="checkbox" name="vehicle" value="14"> DIY/Crafts
+    </div>
+
+    <!--Activity Choices Food and Drink-->
+
+    <div class="card-text" id="activitylistfoodanddrink">
+    <input type="checkbox" name="vehicle" value="2"> Food and Drink<br>
+    <input type="checkbox" name="vehicle" value="21"> Cuisine<br>
+    <input type="checkbox" name="vehicle" value="22"> Nightlife<br>
+    </div>
+
+    <!--Activity Choices Fitness-->
+
+    <div class="card-text" id="activitylistfitness">
+    <input type="checkbox" name="vehicle" value="3"> Outdoor Recreation<br>    
+    <input type="checkbox" name="vehicle" value="31"> Hiking<br>
+    <input type="checkbox" name="vehicle" value="32"> Climbing<br>
+    <input type="checkbox" name="vehicle" value="33"> Running<br>
+    <input type="checkbox" name="vehicle" value="34"> Biking
+    </div>
+
+    <!--Activity Choices Sports-->
+
+    <div class="card-text" id="activitylistsports">
+    <input type="checkbox" name="vehicle" value="4"> Sports<br>
+    <input type="checkbox" name="vehicle" value="41"> Watching<br>
+    <input type="checkbox" name="vehicle" value="42"> Playing<br>
+    </div>
+
+    <!--Activity Choices Games-->
+
+    <div class="card-text" id="activitylistgames">
+    <input type="checkbox" name="vehicle" value="5"> Toys & Games<br>
+    <input type="checkbox" name="vehicle" value="51"> Board Games<br>
+    <input type="checkbox" name="vehicle" value="52"> Video Games<br>
+    <input type="checkbox" name="vehicle" value="53"> Vintage/Collecting<br>
+    <input type="checkbox" name="vehicle" value="54"> DIY/Tech
+
+            </div>
+                </div>
+                    </div>
+                        </div>
+
+                            <div class="col-md-4"></div>
+
+                            </div>
+
+      
+                            <div align="center">
+                            <button type="button" id="submitactivities" class="btn btn-success" onclick="submitfunction()">Submit</button>
+                            </div>
+
+                                <br>
+                                <br />
+                                <!--<label for="aboutyourself">About Yourself</label>
+                                <textarea class="form-control" rows="10" id="aboutyourself"></textarea>
+                                <br/>-->
+                                <button type="submit" class="btn btn-success submit">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <script type="text/javascript">
+            (function() {
+                document.getElementById("file-input").onchange = function() {
+                const files = document.getElementById('file-input').files;
+                const file = files[0];
+                if(file == null){
+             
+                    return alert('Please select a file to upload your Photo');
+                }
+                getSignedRequest(file);
+                };
+            })();
+        
+            function getSignedRequest(file){
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', `/sign-s3?file-name=${file.name}&file-type=${file.type}`);
+                xhr.onreadystatechange = function() {
+                    if(xhr.readyState === 4){
+                        if(xhr.status === 200){
+                            const response = JSON.parse(xhr.responseText);
+                            uploadFile(file, response.signedRequest, response.url);
+                        }
+                
+                        else{
+                            alert('Could not get signed URL.');
+                        }
+                    }
+                };
+                xhr.send();
+            }
+
+            function uploadFile(file, signedRequest, url){
+                console.log(signedRequest);
+                const xhr = new XMLHttpRequest();
+                // xhr.open('PUT', signedRequest);
+                xhr.open('PUT', "https://morning-harbor-42739.herokuapp.com/" + signedRequest);
+                xhr.onreadystatechange = function() {
+                    if(xhr.readyState === 4){
+                        if(xhr.status === 200){
+                            document.getElementById('preview').src = url;
+                            document.getElementById('avatar-url').value = url;
+                        }
+                        else{
+                            alert('Could not upload file.');
+                        }
+                    }
+                };
+                xhr.send(file);
+            }
+        </script>
+
+        <script src="/assets/js/activity.js"></script>
