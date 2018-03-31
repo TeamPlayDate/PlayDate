@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
       required: true
     },
     emailVerified:{
-      type: DataTypes.boolean,
+      type: DataTypes.BOOLEAN,
       defaultValue: false
     },
   	latitude: {
