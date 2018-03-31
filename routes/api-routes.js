@@ -67,10 +67,27 @@ module.exports = function(app) {
           include: [{model: db.interest}]
       }]
     }).then(function(results){
-
-       
+       var user = req.body.user;
+       var friends = [];
+       for(var i = 0; i <results.length; i++)
+       {
+            var friend = results[i];
+            var common = [];
+            for (var j=0; j<friend.interests.length; j++)
+            {
+                for (var k=0; k<user.interests.length; k++)
+                {
+                    if(friend.interests[j]==user.interests[k])
+                    {
+                        common.push(friend.interests[j]);
+                    }
+                }
+            }
+            friend.common = common;
+            friends.push[friend];
+       }
     
-    res.json(results);
+    res.render("friends",{friends:friends});
     });
   });
 
@@ -86,11 +103,10 @@ app.post("/api/user", ensureLoggedIn, function(req, res) {
 
     request("https://maps.googleapis.com/maps/api/geocode/json?components=postal_code:"+zip+"&key="+api_key, function(err,data) {
     var body = JSON.parse(data.body);
-    console.log(body);
+    
     lat = body.results[0].geometry.location.lat;
     lon = body.results[0].geometry.location.lng;
-    console.log(lat);
-    console.log(lon);
+    
     db.user.create({
       name: req.body.name,
       latitude: lat,
@@ -154,11 +170,22 @@ app.post("/api/user", ensureLoggedIn, function(req, res) {
 
 //   update user information 
 app.put("/api/user", ensureLoggedIn, function(req, res) {
-     
+    var userId;
+    var zip = req.body.zipcode;
+    var lat;
+    var lon;
+    var api_key = process.env.API_KEY;
+
+    request("https://maps.googleapis.com/maps/api/geocode/json?components=postal_code:"+zip+"&key="+api_key, function(err,data) {
+    var body = JSON.parse(data.body);
+    
+    lat = body.results[0].geometry.location.lat;
+    lon = body.results[0].geometry.location.lng;
+    
      db.user.update({
       name: req.body.name,
-      latitude: req.body.latitude,
-      longitude: req.body.longitude,
+      latitude: lat,
+      longitude: lon,
       picture: req.body.picture
       }, 
       {
@@ -191,7 +218,7 @@ app.put("/api/user", ensureLoggedIn, function(req, res) {
     res.json(err);
   });
  
-
+});
 });
 
 

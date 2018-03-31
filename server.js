@@ -88,9 +88,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(flash());
+// app.use(flash());
 
-// Handle auth failure error messages
+// //Handle auth failure error messages
 // app.use(function(req, res, next) {
 //  if (req && req.query && req.query.error) {
 //    req.flash("error", req.query.error);
@@ -134,8 +134,8 @@ app.use(flash());
 //   });
 // }
 
-// production error handler
-// no stacktraces leaked to user
+// // production error handler
+// // no stacktraces leaked to user
 // app.use(function(err, req, res, next) {
 //   res.status(err.status || 500);
 //   res.render('error', {
@@ -175,7 +175,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 
 // Starts the server to begin listening
 // =============================================================
-db.sequelize.sync({}).then(function(){
+db.sequelize.sync({force:true}).then(function(){
 	for (var i = 0; i < interests.length; i++)
     {
     	db.interest.upsert({id: interests[i].id, name: interests[i].name});
