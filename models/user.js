@@ -15,7 +15,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       required: true
     },
-
+    emailVerified:{
+      type: DataTypes.boolean,
+      defaultValue: false
+    },
   	latitude: {
   		type: DataTypes.INTEGER,
   		allowNull: true,
