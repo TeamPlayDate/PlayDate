@@ -95,7 +95,7 @@ module.exports = function(app) {
 //  //  create new user
 //   app.post("/api/new", function(req, res) {
 app.post("/api/user", ensureLoggedIn, function(req, res) {
-    var userId;
+    var userId = req.body.user_id;
     var zip = req.body.zipcode;
     var lat;
     var lon;
@@ -108,6 +108,7 @@ app.post("/api/user", ensureLoggedIn, function(req, res) {
     lon = body.results[0].geometry.location.lng;
     
     db.user.create({
+      id: userId,
       name: req.body.name,
       latitude: lat,
       longitude: lon,
@@ -145,7 +146,7 @@ app.post("/api/user", ensureLoggedIn, function(req, res) {
       body: req.body.text,
       title: req.body.title,
       recipientId: req.body.recipientId,
-      senderId: req.body.senderId
+      senderId: req.body.user_id
     }).then(function(dbMessage) {
       res.json(dbMessage);
     })
@@ -170,7 +171,7 @@ app.post("/api/user", ensureLoggedIn, function(req, res) {
 
 //   update user information 
 app.put("/api/user", ensureLoggedIn, function(req, res) {
-    var userId;
+    var userId = req.body.user_id;
     var zip = req.body.zipcode;
     var lat;
     var lon;
@@ -190,17 +191,17 @@ app.put("/api/user", ensureLoggedIn, function(req, res) {
       }, 
       {
           where: {
-            id: req.body.id
+            id: userId
           }
       
     }).then(function(dbUser) {
       
-      db.user_interest_relationship.destroy({where: {id: req.body.id}}).then(function(){
+      db.user_interest_relationship.destroy({where: {id: userId}}).then(function(){
           var count = 0;
           for (var i = 0; i<req.body.interests.length; i++)
           {
               db.user_interest_relationship.upsert({
-                  userId: req.body.id,
+                  userId: userId,
                   interestId: req.body.interests[i]
               }).then(function(result){
                   count++;
