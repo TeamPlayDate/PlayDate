@@ -11,14 +11,7 @@ module.exports = function(sequelize, DataTypes) {
 	  
 	  },
     
-    email: {
-      type: DataTypes.STRING,
-      required: true
-    },
-    emailVerified:{
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
+ 
   	latitude: {
   		type: DataTypes.INTEGER,
   		allowNull: true,
@@ -39,13 +32,7 @@ module.exports = function(sequelize, DataTypes) {
   		validate: {
   			len: [1]
   		},
-    },
-
-    password: {
-      type: DataTypes.STRING,
-      required: true
     }
-  	
 
     },{
       timestamps: false 
