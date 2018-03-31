@@ -82,7 +82,7 @@ app.post("/api/user", ensureLoggedIn, function(req, res) {
     var lon;
 
     geocoder.geocode(zip, function(err,data) {
-
+    console.log(data);
     lat = data.geometry.location.latitude;
     lon = data.geometry.location.longitude;
     console.log(lat);
