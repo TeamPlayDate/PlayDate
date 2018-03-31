@@ -34,6 +34,16 @@ app.get('/user', ensureLoggedIn, function(req, res, next) {
   
 });
 
+app.get('/callback',
+  passport.authenticate('auth0', {
+    failureRedirect: '/'
+  }),
+  function(req, res) {
+    res.redirect(req.session.returnTo || '/index');
+ 
+ });
+
+
 app.get('/login', passport.authenticate('auth0', {
   clientID: process.env.AUTH0_CLIENT_ID,
   domain: process.env.AUTH0_DOMAIN,

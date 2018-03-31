@@ -1,5 +1,6 @@
 var db = require("../models");
 var aws = require('aws-sdk');
+var geocoder = require("geocoder");
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 
 const S3_BUCKET = process.env.S3_BUCKET;
@@ -65,35 +66,7 @@ module.exports = function(app) {
       }]
     }).then(function(results){
 
-        // const resObj = users.map(user => {
-
-        //   return Object.assign({},
-        //       {
-        //         userId: user.id,
-        //         user_name: user.name,
-        //         latitude: user.latitude,
-        //         longitude: user.longitude,
-        //         picture: user.picture,
-        //         relationships: user.user_interest_relationship.map(relationship => {
-                     
-        //             return Object.assign({},
-        //                 {
-        //                    relationship_id: relationship.id,
-        //                    interestId: relationship.interestId,
-        //                    interest: user_interest_relationship.interest.map(interest => {
-        //                         return Object.assign(
-        //                           {},
-        //                           {
-        //                               interest: interest.name 
-        //                           });
-        //                    })
-        //                 }
-        //             );  
-        //         })
-        //       }
-        //   );
-        // })
-
+       
     
     res.json(results);
     });
@@ -104,10 +77,22 @@ module.exports = function(app) {
 //   app.post("/api/new", function(req, res) {
 app.post("/api/user", ensureLoggedIn, function(req, res) {
     var userId;
+    var zip = req.body.zipcode;
+    var lat;
+    var lon;
+
+    geocoder.geocode(zip, function(err) {
+
+    }).then(function(data){
+    
+    lat = data.geometry.location.latitude;
+    lon = data.geometry.location.longitude;
+    console.log(lat);
+    console.log(lon);
     db.user.create({
       name: req.body.name,
-      latitude: req.body.latitude,
-      longitude: req.body.longitude,
+      latitude: lat,
+      longitude: lon,
       picture: req.body.picture
     }).then(function(dbUser) {
        var count = 0;
@@ -131,7 +116,7 @@ app.post("/api/user", ensureLoggedIn, function(req, res) {
     }).catch(function(err) {
        res.json(err);
       });
- 
+    });
    
   });
 
