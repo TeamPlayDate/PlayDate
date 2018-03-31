@@ -39,7 +39,7 @@ app.get('/callback',
     failureRedirect: '/'
   }),
   function(req, res) {
-    res.redirect(req.session.returnTo || '/index');
+    res.redirect(req.session.returnTo || '/');
  
  });
 
