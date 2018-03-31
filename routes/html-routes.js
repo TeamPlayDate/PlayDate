@@ -29,17 +29,13 @@ app.get('/signup', function(req, res, next) {
  
 });
 
-app.get('/user', ensureLoggedIn, function(req, res, next) {
-  res.render('user');
-  
-});
 
 app.get('/callback',
   passport.authenticate('auth0', {
     failureRedirect: '/'
   }),
   function(req, res) {
-    res.redirect(req.session.returnTo || '/');
+    res.redirect('/');
  
  });
 

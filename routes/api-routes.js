@@ -1,7 +1,7 @@
 var db = require("../models");
 var aws = require('aws-sdk');
 var geocoder = require("geocoder");
-var request = require("request");
+var request = require("request-promise");
 
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 
@@ -52,9 +52,9 @@ module.exports = function(app) {
  //  });
 
 //grabs all messages
-  app.get("/api/messages/:id", ensureLoggedIn, function(req, res) {
+  app.get("/api/messages/", ensureLoggedIn, function(req, res) {
     db.message.findAll({where: {
-      recipientId: req.params.id
+      recipientId: req.user.user_id
     }}).then(function(results) {
       res.json(results);
     });
@@ -62,51 +62,68 @@ module.exports = function(app) {
 
 //grabs all users
   app.get("/api/users/all", ensureLoggedIn, function(req, res){
+    
+
+    db.user.findOne({include:[{model: db.user_interest_relationship,
+          include: [{model: db.interest}]
+      }],
+      where: {
+        id: req.user.user_id
+      }
+    }).then(function(user){
     db.user.findAll({
       include:[{model: db.user_interest_relationship,
           include: [{model: db.interest}]
       }]
     }).then(function(results){
-       var user = req.body.user;
+       
        var friends = [];
        for(var i = 0; i <results.length; i++)
        {
+            console.log(user.user_interest_relationships[0].interest.name);
             var friend = results[i];
-            var common = [];
-            for (var j=0; j<friend.interests.length; j++)
+            if (friend.id != user.id)
             {
-                for (var k=0; k<user.interests.length; k++)
+            var common = [];
+            for (var j=0; j<friend.user_interest_relationships.length; j++)
+            {
+                for (var k=0; k<user.user_interest_relationships.length; k++)
                 {
-                    if(friend.interests[j]==user.interests[k])
+                    if(friend.user_interest_relationships[j].interestId==user.user_interest_relationships[k].interestId)
                     {
-                        common.push(friend.interests[j]);
+                        common.push(friend.user_interest_relationships[j].interest.name);
                     }
                 }
             }
             friend.common = common;
             friends.push[friend];
+            
+            }
        }
     
     res.render("friends",{friends:friends});
     });
+  });
   });
 
 
 //  //  create new user
 //   app.post("/api/new", function(req, res) {
 app.post("/api/user", ensureLoggedIn, function(req, res) {
-    var userId = req.body.user_id;
+    console.log(req.body);
+    var userId = req.user.user_id;
     var zip = req.body.zipcode;
     var lat;
     var lon;
     var api_key = process.env.API_KEY;
+    
 
     request("https://maps.googleapis.com/maps/api/geocode/json?components=postal_code:"+zip+"&key="+api_key, function(err,data) {
     var body = JSON.parse(data.body);
-    
     lat = body.results[0].geometry.location.lat;
     lon = body.results[0].geometry.location.lng;
-    
+    }).then(function(geo){
+
     db.user.create({
       id: userId,
       name: req.body.name,
@@ -115,22 +132,20 @@ app.post("/api/user", ensureLoggedIn, function(req, res) {
       picture: req.body.picture
     }).then(function(dbUser) {
        var count = 0;
-       userId = dbUser.id;
-       for (var i = 0; i<req.body.interests.length; i++)
-      {
-        db.user_interest_relationship.create({
-            userId: userId,
-            interestId: req.body.interests[i]
-        }).then(function(result){
-            count++;
-            if (count == req.body.interests.length)
-            {
-              res.json(dbUser);
-            }
-        }).catch(function(err) {
-         console.log(err);
-        });
-      }
+       var interests = req.body["interests[]"];
+          for (var i = 0; i<interests.length; i++)
+          {
+              db.user_interest_relationship.upsert({
+                  userId: userId,
+                  interestId: interests[i]
+              }).then(function(result){
+                  count++;
+                  if (count == interests.length)
+                  {
+                      res.json(dbUser);
+                  }
+                });
+          }
      
     }).catch(function(err) {
        res.json(err);
@@ -139,6 +154,18 @@ app.post("/api/user", ensureLoggedIn, function(req, res) {
    
   });
 
+app.get('/user', ensureLoggedIn, function(req, res) {
+  db.user.findOne({include:[{model: db.user_interest_relationship,
+          include: [{model: db.interest}]
+      }],
+      where: {
+        id: req.user.user_id
+      }
+    }).then(function(user){
+
+      res.render('user',{user: user});
+  });
+});
 
 // create a new message 
  app.post("/api/newMessage", ensureLoggedIn, function(req, res) {
@@ -146,7 +173,7 @@ app.post("/api/user", ensureLoggedIn, function(req, res) {
       body: req.body.text,
       title: req.body.title,
       recipientId: req.body.recipientId,
-      senderId: req.body.user_id
+      senderId: req.user.user_id
     }).then(function(dbMessage) {
       res.json(dbMessage);
     })
@@ -171,7 +198,7 @@ app.post("/api/user", ensureLoggedIn, function(req, res) {
 
 //   update user information 
 app.put("/api/user", ensureLoggedIn, function(req, res) {
-    var userId = req.body.user_id;
+    var userId = req.user.user_id;
     var zip = req.body.zipcode;
     var lat;
     var lon;
@@ -198,14 +225,15 @@ app.put("/api/user", ensureLoggedIn, function(req, res) {
       
       db.user_interest_relationship.destroy({where: {id: userId}}).then(function(){
           var count = 0;
-          for (var i = 0; i<req.body.interests.length; i++)
+          var interests = req.body["interests[]"];
+          for (var i = 0; i<interests.length; i++)
           {
               db.user_interest_relationship.upsert({
                   userId: userId,
-                  interestId: req.body.interests[i]
+                  interestId: interests[i]
               }).then(function(result){
                   count++;
-                  if (count == req.body.interests.length)
+                  if (count == interests.length)
                   {
                       res.json(dbUser);
                   }

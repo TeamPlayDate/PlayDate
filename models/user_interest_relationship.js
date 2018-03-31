@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
         ,
         userId:
         {
-          type: DataTypes.INTEGER,
+          type: DataTypes.STRING,
           allowNull: false
         },
         interestId:

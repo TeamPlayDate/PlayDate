@@ -25,12 +25,12 @@ module.exports = function(sequelize, DataTypes) {
       },
 
       senderId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false
       },
 
       recipientId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false
       }
 

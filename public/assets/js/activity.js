@@ -49,7 +49,7 @@ $("#activitylistsports").hide();
 
 
 function submitfunction(event) {
-	var user_id = user.user_id;
+	
 	var interests = [];
 	$("input[name = vehicle]:checked").each(function(){
 		interests.push($(this).val());
@@ -60,19 +60,18 @@ function submitfunction(event) {
     var zipcode = $("#zipcode").val().trim();
     
     var newUser = {
-    	user_id: user_id,
     	name: name,
     	picture: "n/a",
     	zipcode: zipcode,
     	interests: interests
     };
-    
+    console.log(newUser);
     $.ajax("api/user", {
     	type: "POST",
 		data: newUser
 		}).then(function() {
 			console.log("created new user");
-			location.redirect("/user");
+			location.replace("/user");
 		});
 
 }
