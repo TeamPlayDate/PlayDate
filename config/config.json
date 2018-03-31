@@ -1,22 +1,22 @@
 {
   "development": {
-    "username": "process.env.JawsDBusername",
-    "password": "process.env.JawsDBpassword",
-    "database": "process.env.JawsDB",
+    "username": process.env.JawsDBusername,
+    "password": process.env.JawsDBpassword,
+    "database": process.env.JawsDB,
     "host": "d6vscs19jtah8iwb.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     "dialect": "mysql"
   },
   "test": {
-    "username": "process.env.JawsDBusername",
-    "password": "process.env.JawsDBpassword",
-    "database": "process.env.JawsDB",
+    "username": process.env.JawsDBusername,
+    "password": process.env.JawsDBpassword,
+    "database": process.env.JawsDB,
     "host": "d6vscs19jtah8iwb.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     "dialect": "mysql"
   },
   "production": {
-    "username": "process.env.JawsDBusername",
-    "password": "process.env.JawsDBpassword",
-    "database": "process.env.JawsDB",
+    "username": process.env.JawsDBusername,
+    "password": process.env.JawsDBpassword,
+    "database": process.env.JawsDB,
     "host": "d6vscs19jtah8iwb.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     "dialect": "mysql"
   }
