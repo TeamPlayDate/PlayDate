@@ -183,7 +183,7 @@
                 console.log(signedRequest);
                 const xhr = new XMLHttpRequest();
                 // xhr.open('PUT', signedRequest);
-                xhr.open('PUT', signedRequest);
+                xhr.open('POST', signedRequest);
                 xhr.onreadystatechange = function() {
                     if(xhr.readyState === 4){
                         if(xhr.status === 200){
